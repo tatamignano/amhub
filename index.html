@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL - Team Work Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --dos-green: #33ff33;
+            --dos-bg: #000000;
+            --dos-shadow: #003300;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dos-bg);
+            color: var(--dos-green);
+            font-family: 'VT323', monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-transform: uppercase;
+        }
+
+        /* Effetto Scanline del vecchio monitor */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        header {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--dos-green);
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .system-info {
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        .hub-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 850px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tool-card {
+            border: 2px solid var(--dos-green);
+            padding: 20px;
+            text-decoration: none;
+            color: var(--dos-green);
+            transition: all 0.2s;
+            background: transparent;
+            position: relative;
+        }
+
+        .tool-card:hover {
+            background-color: var(--dos-green);
+            color: var(--dos-bg);
+            cursor: pointer;
+        }
+
+        /* Simula i bordi ASCII */
+        .tool-card::before {
+            content: "[ EXECUTABLE ]";
+            position: absolute;
+            top: -12px;
+            left: 10px;
+            background: var(--dos-bg);
+            padding: 0 5px;
+            font-size: 0.9rem;
+        }
+
+        .tool-card:hover::before {
+            background: var(--dos-green);
+            color: var(--dos-bg);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .cmd-line {
+            font-weight: bold;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background: var(--dos-green);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            text-align: left;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 600px) {
+            .hub-container { grid-template-columns: 1fr; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="system-info">C:\> AM_HUB.EXE /SYSTEM_LOAD</div>
+        <h1>AM HUB v1.0</h1>
+        <div class="system-info">MEMORIA DISPONIBILE: 640KB - STATUS: ONLINE</div>
+    </header>
+
+    <div class="hub-container">
+        <a href="https://tatamignano.github.io/output-codici-prodotto/" class="tool-card">
+            <h2>01. GEN_BLOCCHI_COD</h2>
+            <p>> GENERAZIONE E PULIZIA OUTPUT PER COLONNE EXCEL</p>
+            <p>> STATUS: READY</p>
+            <p>> VERSION: 2.0</p>
+            <div class="cmd-line">ESECU_PROMPT: RUN CODICI.BAT<span class="cursor"></span></div>
+        </a>
+
+        <a href="https://tatamignano.github.io/tool-negozi/" class="tool-card">
+            <h2>02. ELENCO_MW_STORE</h2>
+            <p>> SELEZIONE NEGOZI PER LANDING</p>
+            <p>> STATUS: READY</p>
+            <p>> VERSION: 2.0</p>
+            <div class="cmd-line">ESECU_PROMPT: RUN STORE_QUERY.EXE<span class="cursor"></span></div>
+        </a>
+    </div>
+
+    <footer>
+        <p>C:\> _</p>
+        <div style="font-size: 0.8rem; opacity: 0.7;">
+            (C) 2025 ANTONIO MIGNANO @ IDNTT. ALL RIGHTS RESERVED.
+        </div>
+    </footer>
+
+</body>
+</html>
