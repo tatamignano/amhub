@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL - Team Work Hub</title>
+    <title>TERMINAL - AM HUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=VT323&display=swap" rel="stylesheet">
     
     <style>
@@ -28,6 +28,7 @@
             align-items: center;
             min-height: 100vh;
             text-transform: uppercase;
+            overflow-x: hidden;
         }
 
         /* Effetto Scanline del vecchio monitor */
@@ -38,14 +39,14 @@
             top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
+            z-index: 999;
             background-size: 100% 4px, 3px 100%;
             pointer-events: none;
         }
 
         header {
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             margin-bottom: 40px;
             border-bottom: 2px solid var(--dos-green);
             padding-bottom: 10px;
@@ -69,7 +70,7 @@
             width: 100%;
             max-width: 850px;
             position: relative;
-            z-index: 1;
+            z-index: 10;
         }
 
         .tool-card {
@@ -88,7 +89,6 @@
             cursor: pointer;
         }
 
-        /* Simula i bordi ASCII */
         .tool-card::before {
             content: "[ EXECUTABLE ]";
             position: absolute;
@@ -116,6 +116,39 @@
             line-height: 1.2;
         }
 
+        /* Sezione LOG */
+        .sys-log {
+            width: 100%;
+            max-width: 850px;
+            margin-top: 40px;
+            border: 1px solid var(--dos-green);
+            padding: 15px;
+            background: rgba(51, 255, 51, 0.05);
+            font-size: 1.1rem;
+            z-index: 10;
+        }
+
+        .log-title { 
+            color: var(--dos-bg); 
+            background: var(--dos-green); 
+            display: inline-block; 
+            padding: 0 10px; 
+            margin-bottom: 10px; 
+            font-weight: bold;
+        }
+
+        .log-entry { margin-bottom: 5px; opacity: 0.9; }
+
+        /* Canvas Matrix */
+        #matrix-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: none;
+            z-index: 1;
+            opacity: 0.6;
+        }
+
         .cmd-line {
             font-weight: bold;
         }
@@ -131,18 +164,18 @@
         }
 
         @keyframes blink {
-            0% { opacity: 1; }
+            0%, 100% { opacity: 1; }
             50% { opacity: 0; }
-            100% { opacity: 1; }
         }
 
         footer {
             margin-top: auto;
             padding: 20px;
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             text-align: left;
             font-size: 1.1rem;
+            z-index: 10;
         }
 
         @media (max-width: 600px) {
@@ -152,6 +185,8 @@
     </style>
 </head>
 <body>
+
+    <canvas id="matrix-canvas"></canvas>
 
     <header>
         <div class="system-info">C:\> AM_HUB.EXE /SYSTEM_LOAD</div>
@@ -177,12 +212,71 @@
         </a>
     </div>
 
+    <div class="sys-log">
+        <div class="log-title">SYS_HISTORY.LOG</div>
+        <div class="log-entry">[11/02/2026 09:15] - SYSTEM_UPDATE: AGGIUNTO TOOL ELENCO_MW_STORE.EXE.</div>
+        <div class="log-entry">[10/02/2026 14:30] - SYSTEM_UPDATE: AGGIUNTO TOOL GEN_BLOCCHI_COD.EXE.</div>
+        <div class="log-entry">[09/02/2026 11:00] - SYSTEM_UPDATE: MIGRAZIONE A INTERFACCIA CRT COMPLETATA.</div>
+    </div>
+
     <footer>
-        <p>C:\> _</p>
-        <div style="font-size: 0.8rem; opacity: 0.7;">
+        <p>C:\> DIGITA 'MATRIX' PER LA MODALITÀ AVANZATA...<span class="cursor"></span></p>
+        <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 10px;">
             (C) 2025 ANTONIO MIGNANO @ IDNTT. ALL RIGHTS RESERVED.
         </div>
     </footer>
 
+    <script>
+        // Gestione Easter Egg Matrix
+        let inputString = "";
+        window.addEventListener('keydown', (e) => {
+            inputString += e.key.toUpperCase();
+            // Controllo parola chiave MATRIX
+            if (inputString.includes("MATRIX")) {
+                startMatrix();
+                inputString = "";
+            }
+            // Controllo parola chiave DOS per tornare indietro
+            if (inputString.includes("DOS")) {
+                stopMatrix();
+                inputString = "";
+            }
+            if (inputString.length > 10) inputString = inputString.substring(1);
+        });
+
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let animation;
+
+        function startMatrix() {
+            canvas.style.display = 'block';
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]";
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#0F0';
+                ctx.font = fontSize + 'px VT323';
+                for (let i = 0; i < drops.length; i++) {
+                    const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }
+            if(animation) clearInterval(animation);
+            animation = setInterval(draw, 33);
+        }
+
+        function stopMatrix() {
+            clearInterval(animation);
+            canvas.style.display = 'none';
+        }
+    </script>
 </body>
 </html>
